@@ -1,0 +1,35 @@
+=== myFuncThread(): ключ = 40686b !!!! Lat = 51.8764 Long = -0.3746 myCenterMercator = 6706890.60985,-53811.66791 myWorldRelativeScale = 0.6229281 worldPosition = 44176.28911,7544.52334 CurrentTime = 499657
+=== myFuncThread(): ключ = 40686b Истории еще нет. Данные полета считаем достоверными, летим по ним. myPlane.Position = (5324.9, 0.0, 45474.5) CurrentTime = 499657
+=== myFuncThread(): ключ = 40686b BackData = False myPlaneFrozen = False myPlaneBadPos = False CurrentTime = 499657
+=== myFuncThread(): ключ = 40686b Заполнили экземпляр малой структуры. CurrentTime = 499657
+=== myFuncThread(): ключ = 40686b Создали самолет, завели новую историю и добавили по записи во все словари. CurrentTime = 499657
+%%% myFuncProcData(): ключ = 40686b. Обнаружена низкая скорость: прячем самолет CurrentTime = 500143
+%%% myFuncProcData(): ключ = 40686b. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 501048
+%%% myFuncProcData(): ключ = 40686b. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 502058
+%%% myFuncProcData(): ключ = 40686b. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 503058
+%%% myFuncProcData(): ключ = 40686b. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 504061
+=== myFuncThread(): ключ = 40686b Прогноз. LastDeltaTime = 4432 Previous Position =(5324.9, 0.0, 45474.5) Previous Speed = (1.0, 0.0, -2.4) Predicted Position = (5329.3, 0.0, 45464.0) CurrentTime = 504656
+=== myFuncThread(): ключ = 40686b Данные полета - устаревшее время, летим по прогнозу. Новое время = 1543334619, старое = 1543334619, myPlane.Position = (5329.3, 0.0, 45464.0) CurrentTime = 504656
+=== myFuncThread(): ключ = 40686b BackData = True myPlaneFrozen = False myPlaneBadPos = False CurrentTime = 504656
+=== myFuncThread(): ключ = 40686b Заполнили экземпляр малой структуры. CurrentTime = 504656
+=== myFuncThread(): ключ = 40686b Обновили по записи во всех словарях. Точек в истории: 2 CurrentTime = 504656
+Time	PosTime	Predict	PosX	PosY	PosZ	Pitch	Yaw	Roll	SpeedX	SpeedY	SpeedZ
+499608	1543334619	Web	5324.852	0	45474.52	0	157	0	1.004179	0	-2.365697
+504040	1543334619	BackData	5329.303	0	45464.03	0	157	0	1.004179	0	-2.365697
+%%% myFuncProcData(): ключ = 40686b. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 505105
+%%% myFuncProcData(): ключ = 40686b. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 505906
+%%% myFuncProcData(): ключ = 40686b. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 506906
+%%% myFuncProcData(): ключ = 40686b. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 507906
+%%% myFuncProcData(): ключ = 40686b. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 508909
+=== myFuncThread(): ключ = 40686b Прогноз. LastDeltaTime = 5005 Previous Position =(5329.3, 0.0, 45464.0) Previous Speed = (1.0, 0.0, -2.4) Predicted Position = (5334.3, 0.0, 45452.2) CurrentTime = 509498
+=== myFuncThread(): ключ = 40686b Полученные данные. Responsed Position = (5324.9, 0.0, 45452.2) CurrentTime = 509498
+=== myFuncThread(): ключ = 40686b Угол между направлением на прогноз и полученной точкой (град.) = 43.67098 CurrentTime = 509498
+=== myFuncThread(): ключ = 40686b Данные полета считаем достоверными, летим по ним. myPlane.Position = (5324.9, 0.0, 45452.2) CurrentTime = 509498
+=== myFuncThread(): ключ = 40686b BackData = False myPlaneFrozen = False myPlaneBadPos = False CurrentTime = 509498
+=== myFuncThread(): ключ = 40686b Заполнили экземпляр малой структуры. CurrentTime = 509498
+=== myFuncThread(): ключ = 40686b Обновили по записи во всех словарях. Точек в истории: 3 CurrentTime = 509499
+Time	PosTime	Predict	PosX	PosY	PosZ	Pitch	Yaw	Roll	SpeedX	SpeedY	SpeedZ
+499608	1543334619	Web	5324.852	0	45474.52	0	157	0	1.004179	0	-2.365697
+504040	1543334619	BackData	5329.303	0	45464.03	0	157	0	1.004179	0	-2.365697
+509045	1543334629	Web	5324.852	0	45452.23	0	168	0	0.5883898	0	-2.768158
+%%% myFuncProcData(): Самолет 40686b сел. Будем удалять  CurrentTime = 509957

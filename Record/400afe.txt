@@ -1,0 +1,74 @@
+=== myFuncThread(): ключ = 400afe !!!! Lat = 51.0261 Long = -0.4279 myCenterMercator = 6706890.60985,-53811.66791 myWorldRelativeScale = 0.6229281 worldPosition = -50443.95121,3848.48664 CurrentTime = 634453
+=== myFuncThread(): ключ = 400afe Истории еще нет. Данные полета считаем достоверными, летим по ним. myPlane.Position = (1628.8, 3426.9, -49145.7) CurrentTime = 634453
+=== myFuncThread(): ключ = 400afe BackData = False myPlaneFrozen = False myPlaneBadPos = False CurrentTime = 634454
+=== myFuncThread(): ключ = 400afe Заполнили экземпляр малой структуры. CurrentTime = 634454
+=== myFuncThread(): ключ = 400afe Создали самолет, завели новую историю и добавили по записи во все словари. CurrentTime = 634454
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 634504
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 635404
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 636413
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 637413
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 638409
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 639410
+=== myFuncThread(): ключ = 400afe Прогноз. LastDeltaTime = 5258 Previous Position =(1628.8, 3426.9, -49145.7) Previous Speed = (145.6, 9.8, -136.8) Predicted Position = (2394.3, 3478.1, -49865.3) CurrentTime = 640419
+=== myFuncThread(): ключ = 400afe Полученные данные. Responsed Position = (2322.3, 3472.6, -49796.3) CurrentTime = 640419
+=== myFuncThread(): ключ = 400afe Угол между направлением на прогноз и полученной точкой (град.) = 0.07132626 CurrentTime = 640419
+=== myFuncThread(): ключ = 400afe Данные полета считаем достоверными, летим по ним. myPlane.Position = (2322.3, 3472.6, -49796.3) CurrentTime = 640419
+=== myFuncThread(): ключ = 400afe BackData = False myPlaneFrozen = False myPlaneBadPos = False CurrentTime = 640419
+=== myFuncThread(): ключ = 400afe Заполнили экземпляр малой структуры. CurrentTime = 640419
+=== myFuncThread(): ключ = 400afe Обновили по записи во всех словарях. Точек в истории: 2 CurrentTime = 640419
+Time	PosTime	Predict	PosX	PosY	PosZ	Pitch	Yaw	Roll	SpeedX	SpeedY	SpeedZ
+634364	1543334755	Web	1628.815	3426.86	-49145.73	-2.793749	133.23	0	145.5763	9.75	-136.8488
+639622	1543334760	Web	2322.255	3472.58	-49796.31	-2.872219	133.13	0	146.625	10.08	-137.3533
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 640460
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 641177
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 642183
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 643184
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 644207
+=== myFuncThread(): ключ = 400afe Прогноз. LastDeltaTime = 4761 Previous Position =(2322.3, 3472.6, -49796.3) Previous Speed = (146.6, 10.1, -137.4) Predicted Position = (3020.3, 3520.6, -50450.3) CurrentTime = 645220
+=== myFuncThread(): ключ = 400afe Полученные данные. Responsed Position = (2988.0, 3533.5, -50424.5) CurrentTime = 645220
+=== myFuncThread(): ключ = 400afe Угол между направлением на прогноз и полученной точкой (град.) = 0.9614412 CurrentTime = 645220
+=== myFuncThread(): ключ = 400afe Данные полета считаем достоверными, летим по ним. myPlane.Position = (2988.0, 3533.5, -50424.5) CurrentTime = 645220
+=== myFuncThread(): ключ = 400afe BackData = False myPlaneFrozen = False myPlaneBadPos = False CurrentTime = 645220
+=== myFuncThread(): ключ = 400afe Заполнили экземпляр малой структуры. CurrentTime = 645220
+=== myFuncThread(): ключ = 400afe Обновили по записи во всех словарях. Точек в истории: 3 CurrentTime = 645220
+Time	PosTime	Predict	PosX	PosY	PosZ	Pitch	Yaw	Roll	SpeedX	SpeedY	SpeedZ
+634364	1543334755	Web	1628.815	3426.86	-49145.73	-2.793749	133.23	0	145.5763	9.75	-136.8488
+639622	1543334760	Web	2322.255	3472.58	-49796.31	-2.872219	133.13	0	146.625	10.08	-137.3533
+644383	1543334764	Web	2987.957	3533.54	-50424.53	-3.511462	133.24	0	146.616	12.35	-137.8744
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 645251
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 645764
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 646785
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 647794
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 648798
+=== myFuncThread(): ключ = 400afe Прогноз. LastDeltaTime = 5001 Previous Position =(2988.0, 3533.5, -50424.5) Previous Speed = (146.6, 12.4, -137.9) Predicted Position = (3721.2, 3595.3, -51114.0) CurrentTime = 649816
+=== myFuncThread(): ключ = 400afe Полученные данные. Responsed Position = (3743.8, 3594.5, -51130.0) CurrentTime = 649816
+=== myFuncThread(): ключ = 400afe Угол между направлением на прогноз и полученной точкой (град.) = 0.254109 CurrentTime = 649816
+=== myFuncThread(): ключ = 400afe Данные полета считаем достоверными, летим по ним. myPlane.Position = (3743.8, 3594.5, -51130.0) CurrentTime = 649816
+=== myFuncThread(): ключ = 400afe BackData = False myPlaneFrozen = False myPlaneBadPos = False CurrentTime = 649816
+=== myFuncThread(): ключ = 400afe Заполнили экземпляр малой структуры. CurrentTime = 649816
+=== myFuncThread(): ключ = 400afe Обновили по записи во всех словарях. Точек в истории: 4 CurrentTime = 649816
+Time	PosTime	Predict	PosX	PosY	PosZ	Pitch	Yaw	Roll	SpeedX	SpeedY	SpeedZ
+634364	1543334755	Web	1628.815	3426.86	-49145.73	-2.793749	133.23	0	145.5763	9.75	-136.8488
+639622	1543334760	Web	2322.255	3472.58	-49796.31	-2.872219	133.13	0	146.625	10.08	-137.3533
+644383	1543334764	Web	2987.957	3533.54	-50424.53	-3.511462	133.24	0	146.616	12.35	-137.8744
+649384	1543334769	Web	3743.808	3594.5	-51130.02	-3.224602	133.25	0	147.1237	11.38	-138.4001
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 649843
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 650398
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 651430
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 652440
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 653465
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 654474
+=== myFuncThread(): ключ = 400afe Прогноз. LastDeltaTime = 5186 Previous Position =(3743.8, 3594.5, -51130.0) Previous Speed = (147.1, 11.4, -138.4) Predicted Position = (4506.8, 3653.5, -51847.8) CurrentTime = 655484
+=== myFuncThread(): ключ = 400afe Полученные данные. Responsed Position = (4534.3, 3647.8, -51879.1) CurrentTime = 655484
+=== myFuncThread(): ключ = 400afe Угол между направлением на прогноз и полученной точкой (град.) = 0.4693892 CurrentTime = 655484
+=== myFuncThread(): ключ = 400afe Данные полета считаем достоверными, летим по ним. myPlane.Position = (4534.3, 3647.8, -51879.1) CurrentTime = 655484
+=== myFuncThread(): ключ = 400afe BackData = False myPlaneFrozen = False myPlaneBadPos = False CurrentTime = 655484
+=== myFuncThread(): ключ = 400afe Заполнили экземпляр малой структуры. CurrentTime = 655484
+=== myFuncThread(): ключ = 400afe Обновили по записи во всех словарях. Точек в истории: 5 CurrentTime = 655484
+Time	PosTime	Predict	PosX	PosY	PosZ	Pitch	Yaw	Roll	SpeedX	SpeedY	SpeedZ
+634364	1543334755	Web	1628.815	3426.86	-49145.73	-2.793749	133.23	0	145.5763	9.75	-136.8488
+639622	1543334760	Web	2322.255	3472.58	-49796.31	-2.872219	133.13	0	146.625	10.08	-137.3533
+644383	1543334764	Web	2987.957	3533.54	-50424.53	-3.511462	133.24	0	146.616	12.35	-137.8744
+649384	1543334769	Web	3743.808	3594.5	-51130.02	-3.224602	133.25	0	147.1237	11.38	-138.4001
+654570	1543334775	Web	4534.329	3647.84	-51879.14	-3.024634	133.36	0	147.6429	10.73	-139.4238
+%%% myFuncProcData(): ключ = 400afe. Скорость высокая, как и была до того: самолет продолжает отображаться CurrentTime = 655521

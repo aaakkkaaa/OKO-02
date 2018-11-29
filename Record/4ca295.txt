@@ -1,0 +1,34 @@
+=== myFuncThread(): ключ = 4ca295 !!!! Lat = 51.4684 Long = -0.4498 myCenterMercator = 6706890.60985,-53811.66791 myWorldRelativeScale = 0.6229281 worldPosition = -1445.51908,2329.85029 CurrentTime = 137950
+=== myFuncThread(): ключ = 4ca295 Истории еще нет. Данные полета считаем достоверными, летим по ним. myPlane.Position = (110.2, 0.0, -147.3) CurrentTime = 137950
+=== myFuncThread(): ключ = 4ca295 BackData = False myPlaneFrozen = False myPlaneBadPos = False CurrentTime = 137950
+=== myFuncThread(): ключ = 4ca295 Заполнили экземпляр малой структуры. CurrentTime = 137950
+=== myFuncThread(): ключ = 4ca295 Создали самолет, завели новую историю и добавили по записи во все словари. CurrentTime = 137950
+%%% myFuncProcData(): ключ = 4ca295. Обнаружена низкая скорость: прячем самолет CurrentTime = 138420
+%%% myFuncProcData(): ключ = 4ca295. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 139370
+%%% myFuncProcData(): ключ = 4ca295. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 140372
+%%% myFuncProcData(): ключ = 4ca295. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 141371
+%%% myFuncProcData(): ключ = 4ca295. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 142370
+%%% myFuncProcData(): ключ = 4ca295. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 143392
+=== myFuncThread(): ключ = 4ca295 Прогноз. LastDeltaTime = 5244 Previous Position =(110.2, 0.0, -147.3) Previous Speed = (0.0, 0.0, 0.0) Predicted Position = (110.2, 0.0, -147.3) CurrentTime = 143982
+=== myFuncThread(): ключ = 4ca295 Данные полета - устаревшее время, летим по прогнозу. Новое время = 1543334255, старое = 1543334255, myPlane.Position = (110.2, 0.0, -147.3) CurrentTime = 143982
+=== myFuncThread(): ключ = 4ca295 BackData = True myPlaneFrozen = False myPlaneBadPos = False CurrentTime = 143982
+=== myFuncThread(): ключ = 4ca295 Заполнили экземпляр малой структуры. CurrentTime = 143982
+=== myFuncThread(): ключ = 4ca295 Обновили по записи во всех словарях. Точек в истории: 2 CurrentTime = 143982
+Time	PosTime	Predict	PosX	PosY	PosZ	Pitch	Yaw	Roll	SpeedX	SpeedY	SpeedZ
+137838	1543334255	Web	110.179	0	-147.2927	0	0	0	0	0	0
+143082	1543334255	BackData	110.179	0	-147.2927	0	0	0	0	0	0
+%%% myFuncProcData(): ключ = 4ca295. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 144414
+%%% myFuncProcData(): ключ = 4ca295. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 145370
+%%% myFuncProcData(): ключ = 4ca295. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 146534
+%%% myFuncProcData(): ключ = 4ca295. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 147646
+%%% myFuncProcData(): ключ = 4ca295. Скорость низкая, как и была до того: самолет остается спрятанным CurrentTime = 148656
+=== myFuncThread(): ключ = 4ca295 Прогноз. LastDeltaTime = 5174 Previous Position =(110.2, 0.0, -147.3) Previous Speed = (0.0, 0.0, 0.0) Predicted Position = (110.2, 0.0, -147.3) CurrentTime = 149260
+=== myFuncThread(): ключ = 4ca295 Данные полета - устаревшее время, летим по прогнозу. Новое время = 1543334255, старое = 1543334255, myPlane.Position = (110.2, 0.0, -147.3) CurrentTime = 149260
+=== myFuncThread(): ключ = 4ca295 BackData = True myPlaneFrozen = False myPlaneBadPos = False CurrentTime = 149260
+=== myFuncThread(): ключ = 4ca295 Заполнили экземпляр малой структуры. CurrentTime = 149260
+=== myFuncThread(): ключ = 4ca295 Обновили по записи во всех словарях. Точек в истории: 3 CurrentTime = 149260
+Time	PosTime	Predict	PosX	PosY	PosZ	Pitch	Yaw	Roll	SpeedX	SpeedY	SpeedZ
+137838	1543334255	Web	110.179	0	-147.2927	0	0	0	0	0	0
+143082	1543334255	BackData	110.179	0	-147.2927	0	0	0	0	0	0
+148256	1543334255	BackData	110.179	0	-147.2927	0	0	0	0	0	0
+%%% myFuncProcData(): Самолет 4ca295 сел. Будем удалять  CurrentTime = 149702
