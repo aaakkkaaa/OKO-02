@@ -696,18 +696,19 @@ public class sFlightRadar : MonoBehaviour {
 
             if (myFirstData)
             {
+                MyLog("RawData", "ProcData", "**********************************************************************");
                 MyLog("RawData", "ProcData", "=== myFuncThread(): Обнаружено первое получение новых данных. myNewWebData = " + myNewWebData);
                 myFirstData = false;
             }
             else
             {
                 // Ждем заверешения вторичной обработки данных в корутине myFuncProcData()
-                MyLog("RawData", "ProcData", "**********************************************************************");
                 MyLog("RawData", "ProcData", "=== myFuncThread(): Ждем заверешения вторичной обработки данных в корутине myFuncProcData()");
                 while (mySecondaryDataProc)
                 {
                     Thread.Sleep(20);
                 }
+                MyLog("RawData", "ProcData", "**********************************************************************");
                 MyLog("RawData", "ProcData", "=== myFuncThread(): Обнаружено, что вторичная обработка данных завершена.");
             }
             MyLog("RawData", "ProcData", "=== myFuncThread(): Начинаем первичную обработку данных");
@@ -1287,7 +1288,6 @@ public class sFlightRadar : MonoBehaviour {
             //MyLog("**********************************************************************");
 
             // Ждем заверешения первичной обработки данных  в потоке
-            MyLog("RawData", "ProcData", "--------------------------------------------------------");
             MyLog("RawData", "ProcData", "%%% myFuncProcData(): Начинаем ждать первичную обработку данных");
             long myStartWaitTime = myStopWatch.ElapsedMilliseconds - myStartTime;
             while (myPrimaryDataProc)
@@ -1297,6 +1297,7 @@ public class sFlightRadar : MonoBehaviour {
 
             long mySecondProcStartTime = myStopWatch.ElapsedMilliseconds - myStartTime;
 
+            MyLog("RawData", "ProcData", "--------------------------------------------------------");
             MyLog("RawData", "ProcData", "%%% myFuncProcData(): Обнаружено, что первичная обработка данных завершена. myPrimaryDataProc = " + myPrimaryDataProc + ". Текущее время = " + (myStopWatch.ElapsedMilliseconds - myStartTime) + ". Время ожидания первичной обработки = " + (myStopWatch.ElapsedMilliseconds - myStartTime - myStartWaitTime));
             MyLog("RawData", "ProcData", "%%% myFuncProcData(): Начало вторичной обработки данных. Выполняется в основном потоке в корутине myFuncProcData()");
 
