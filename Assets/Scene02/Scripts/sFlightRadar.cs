@@ -323,32 +323,39 @@ public class sFlightRadar : MonoBehaviour {
     // Самолет, выбранный для отображения дополнительной информации (ключ - HEX код ICAO или ID от Virtual Radar Server)
     String mySelectedPlane = null;
 
-    // Use this for initialization
+
+
+
+
+    // ========================================================
+    // ========================================================
     void Start () {
 
-        // ********************** Запись в файл отладочных данных ********************************************
+        // ********************** Подготовим файлы для записи отладочных данных ********************************************
 
-        // Подготовим файл для записи
+        if (myWriteLog) // если логи пишутся
+        {
+            // Создать папку
+            Directory.CreateDirectory(myRecDir);
+            myRecDir = Path.Combine(Directory.GetCurrentDirectory(), myRecDir);
 
-        // Создать папку
-        Directory.CreateDirectory(myRecDir);
-        myRecDir = Path.Combine(Directory.GetCurrentDirectory(), myRecDir);
+            // Файл для записи по умолчанию
+            String myRecFileName = "Main";
+            myRecFile.Add(myRecFileName, new StreamWriter(Path.Combine(myRecDir, myRecFileName + ".txt")));
+            // Файл для записи получаемых данных
+            myRecFileName = "RawData";
+            myRecFile.Add(myRecFileName, new StreamWriter(Path.Combine(myRecDir, myRecFileName + ".txt")));
+            // Файл для записи в фоновом потоке
+            myRecFileName = "Thread";
+            myRecFile.Add(myRecFileName, new StreamWriter(Path.Combine(myRecDir, myRecFileName + ".txt")));
+            // Файл для записи в процессе обработки данных (комбинированный поток: фоновый + корутина)
+            myRecFileName = "ProcData";
+            myRecFile.Add(myRecFileName, new StreamWriter(Path.Combine(myRecDir, myRecFileName + ".txt")));
+            // Файл для записи в каждом кадре
+            myRecFileName = "Update";
+            myRecFile.Add(myRecFileName, new StreamWriter(Path.Combine(myRecDir, myRecFileName + ".txt")));
 
-        // Файл для записи по умолчанию
-        String myRecFileName = "Main";
-        myRecFile.Add(myRecFileName, new StreamWriter(Path.Combine(myRecDir, myRecFileName + ".txt")));
-        // Файл для записи получаемых данных
-        myRecFileName = "RawData";
-        myRecFile.Add(myRecFileName, new StreamWriter(Path.Combine(myRecDir, myRecFileName + ".txt")));
-        // Файл для записи в фоновом потоке
-        myRecFileName = "Thread";
-        myRecFile.Add(myRecFileName, new StreamWriter(Path.Combine(myRecDir, myRecFileName + ".txt")));
-        // Файл для записи в процессе обработки данных (комбинированный поток: фоновый + корутина)
-        myRecFileName = "ProcData";
-        myRecFile.Add(myRecFileName, new StreamWriter(Path.Combine(myRecDir, myRecFileName + ".txt")));
-        // Файл для записи в каждом кадре
-        myRecFileName = "Update";
-        myRecFile.Add(myRecFileName, new StreamWriter(Path.Combine(myRecDir, myRecFileName + ".txt")));
+        }
 
         // ******************************************************************
 
@@ -579,7 +586,7 @@ public class sFlightRadar : MonoBehaviour {
     // Запись в указанный файл
     void MyLog(string myRecName, String myInfo)
     {
-        if (myWriteLog)
+        if (myWriteLog) // если логи пишутся
         {
             myCurrentTime = (int)(myStopWatch.ElapsedMilliseconds - myStartTime);
             myRecFile[myRecName].WriteLine(myInfo + " CurrentTime = " + myCurrentTime);
@@ -589,7 +596,7 @@ public class sFlightRadar : MonoBehaviour {
     // Запись в указанный файл с возможностью не добавлять время
     void MyLog(string myRecName, String myInfo, bool myTime)
     {
-        if (myWriteLog)
+        if (myWriteLog) // если логи пишутся
         {
             if (myTime)
             {
@@ -606,7 +613,7 @@ public class sFlightRadar : MonoBehaviour {
     // Запись в файл по умолчанию
     void MyLog(String myInfo)
     {
-        if (myWriteLog)
+        if (myWriteLog) // если логи пишутся
         {
             myRecFile["Main"].WriteLine(myInfo);
         }
@@ -615,7 +622,7 @@ public class sFlightRadar : MonoBehaviour {
     // Запись в два файла
     void MyLog(string myRecName1, string myRecName2, String myInfo)
     {
-        if (myWriteLog)
+        if (myWriteLog) // если логи пишутся
         {
             myCurrentTime = (int)(myStopWatch.ElapsedMilliseconds - myStartTime);
             myRecFile[myRecName1].WriteLine(myInfo + " CurrentTime = " + myCurrentTime);
@@ -967,8 +974,11 @@ public class sFlightRadar : MonoBehaviour {
                         }
                         try // Создадим лог-файлы для самолета
                         {
-                            myRecFile.Add(myKey, new StreamWriter(Path.Combine(myRecDir, myKey + ".txt")));
-                            myRecFile.Add(myKey+"_Data", new StreamWriter(Path.Combine(myRecDir, myKey + "_Data.txt")));
+                            if (myWriteLog) // если логи пишутся
+                            {
+                                myRecFile.Add(myKey, new StreamWriter(Path.Combine(myRecDir, myKey + ".txt")));
+                                myRecFile.Add(myKey + "_Data", new StreamWriter(Path.Combine(myRecDir, myKey + "_Data.txt")));
+                            }
                         }
                         catch (Exception myEx)
                         {
@@ -1519,10 +1529,13 @@ public class sFlightRadar : MonoBehaviour {
                     Destroy(myPlane.GO);
 
                     // Закроем лог-файлы и удалим записи из словаря лог-файлов
-                    myRecFile[myKeys[i]].Close();
-                    myRecFile[myKeys[i] + "_Data"].Close();
-                    myRecFile.Remove(myKeys[i]);
-                    myRecFile.Remove(myKeys[i] + "_Data");
+                    if (myWriteLog) // если логи пишутся
+                    {
+                        myRecFile[myKeys[i]].Close();
+                        myRecFile[myKeys[i] + "_Data"].Close();
+                        myRecFile.Remove(myKeys[i]);
+                        myRecFile.Remove(myKeys[i] + "_Data");
+                    }
 
                 }
                 else // Самолет не удаляем
@@ -1746,12 +1759,12 @@ public class sFlightRadar : MonoBehaviour {
 
             // Отладка
             myFrameCount++; //
-            bool myWriteLog = false; //
+            bool myWritePlaneLog = false; //
             float myDeltaY = 0.0f; //
 
             if(myLogFrameCount++ > 8)
             {
-                myWriteLog = true;
+                myWritePlaneLog = true;
                 MyLog("Update", "===================== Frame=" + myFrameCount + " LogFrame=" + myLogFrameCount + " Time=" + myCurTime + " LeftToTargetTime=" + myLeftToTargetTime);
                 myLogFrameCount = 0;
             }
@@ -1793,7 +1806,7 @@ public class sFlightRadar : MonoBehaviour {
                         Vector3 myDeltaEu = (myPlane.Euler - myEu); // угол, на который нужно будет повернуть к концу периода
 
                         // Отладка
-                        if (myWriteLog)
+                        if (myWritePlaneLog)
                         {
                             myDeltaY = myDeltaEu.y;
                         } //
@@ -1819,7 +1832,7 @@ public class sFlightRadar : MonoBehaviour {
                         myPlane.GO.transform.eulerAngles = myEu + myDeltaEu * Time.deltaTime * 1000 / myLeftToTargetTime;
 
                         // Отладка
-                        if (myWriteLog)
+                        if (myWritePlaneLog)
                         {
                             MyLog("Update", "Plane=" + myKey + " OldEu=" + myEu.y + " TargetEu=" + myPlane.Euler.y + " DeltaEu=" + myDeltaY + " DeltaEuNorm=" + myDeltaEu.y + " NewEu=" + myPlane.GO.transform.eulerAngles.y);
                         } //
