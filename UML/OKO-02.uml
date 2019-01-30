@@ -622,7 +622,7 @@
 <XPD:REF name="Incomings[0]">Mi1WnIFDHE6h3g0KKPn93AAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="Subvertices[52]" type="UMLActionState" guid="5PHKISVNi0WyiwJR9Yl4VAAA">
-<XPD:ATTR name="Name" type="string">&#1044;&#1074;&#1077; &#1087;&#1086;&#1089;&#1083;&#1077;&#1076;&#1085;&#1080;&#1077; &#1090;&#1086;&#1095;&#1082;&#1080; &#1073;&#1099;&#1083;&#1080; BackData &#1080;&#1083;&#1080; Frozen</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">&#1058;&#1088;&#1080; &#1087;&#1086;&#1089;&#1083;&#1077;&#1076;&#1085;&#1080;&#1077; &#1090;&#1086;&#1095;&#1082;&#1080; &#1073;&#1099;&#1083;&#1080; BackData &#1080;&#1083;&#1080; Frozen</XPD:ATTR>
 <XPD:REF name="ContainerState">p5infp2ZO0WPa6uWmkB3RwAA</XPD:REF>
 <XPD:ATTR name="#Views" type="integer">1</XPD:ATTR>
 <XPD:REF name="Views[0]">hEvuhGwukE2nNw1KASIbwQAA</XPD:REF>
@@ -3418,7 +3418,7 @@
 <XPD:REF name="Model">5PHKISVNi0WyiwJR9Yl4VAAA</XPD:REF>
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="qIyXqPq8yECOvfWyqJsrEAAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="ixjmM9Pflk2s7ovlygtXJAAA">
-<XPD:ATTR name="Text" type="string">&#1044;&#1074;&#1077; &#1087;&#1086;&#1089;&#1083;&#1077;&#1076;&#1085;&#1080;&#1077; &#1090;&#1086;&#1095;&#1082;&#1080; &#1073;&#1099;&#1083;&#1080; BackData &#1080;&#1083;&#1080; Frozen</XPD:ATTR>
+<XPD:ATTR name="Text" type="string">&#1058;&#1088;&#1080; &#1087;&#1086;&#1089;&#1083;&#1077;&#1076;&#1085;&#1080;&#1077; &#1090;&#1086;&#1095;&#1082;&#1080; &#1073;&#1099;&#1083;&#1080; BackData &#1080;&#1083;&#1080; Frozen</XPD:ATTR>
 </XPD:OBJ>
 <XPD:OBJ name="StereotypeLabel" type="LabelView" guid="OFarffKdDEWS/f+NlxTR9gAA">
 <XPD:ATTR name="Visible" type="boolean">False</XPD:ATTR>
