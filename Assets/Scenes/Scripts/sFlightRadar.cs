@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Text;
 using System.Globalization;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 using Newtonsoft.Json.Linq;
 using Mapbox.Unity.Utilities;
@@ -25,7 +23,7 @@ public class sFlightRadar : MonoBehaviour {
     String REQUEST_OpenSky_BASE_URL = "https://aka2001:MyOpenSky@opensky-network.org/api/states/all?";
 
     // Полный текст запроса к серверу
-    String myURL;
+    //String myURL;
 
     // Координаты начальной точки
     //[SerializeField]
@@ -51,9 +49,6 @@ public class sFlightRadar : MonoBehaviour {
     // Отставание отображения от жизни, миллисек. (самолет перемещается так, чтобы оказаться в последней точке через данное время
     [SerializeField]
     int myLag = 20000;
-    // Желательное время цикла запроса данных, сек.
-    [SerializeField]
-    float myWebCycleTime = 5.0f;
     // Желательное время цикла обработки данных, сек.
     [SerializeField]
     float myProcCycleTime = 1.0f;
@@ -101,39 +96,30 @@ public class sFlightRadar : MonoBehaviour {
     public String myStartLongitude;
 
 
-    // Точное время
-    //Stopwatch myStopWatch;
-    long myStartTime;
-    int myCurrentTime;
+    // Время
 
-
-    long myUnixStartTime; // стартовое время Unix
-    long myResponseTime = 0; // Время прихода новых данных от сервера
-    long myStartProcTime = 0; // Время начала первичной обработки данных (если новые данные поступили, то совпадает с myResponseTime)
+    // long myResponseTime = 0; // Время прихода новых данных от сервера. Переехало в WebData
+    long myStartProcTime = 0; // Время начала первичной обработки данных (если новые данные поступили, то совпадает с _WebData.ResponseTime)
     long myStartProcTime2 = 0; // Время начала обработки данных (если новые данные не поступили и первичная обработка не выполнялась, т.е. пока прогноз не строили)
     long myLastDeltaTime = 0; // Время выполнения последнего полного цикла обработки данных (первичной + вторичной)
     int myPosDelay = 0; // разница между исходным временем позиционирования (time_position) и временем на которое идет расчет положения (myStartProcTime)
 
-    // Текстовый объект для приема данных от сервера
-    String myResponseStr = "";
+    // Текстовый объект для приема данных от сервера. Переехал в WebData
+    //String myResponseStr = "";
 
     // Поток, в котором будем обрабатывать полученные данные и поддерживать структуры
     Thread myFightDataThread;
 
     // Флаги разных состояний
-    bool myNewWebData = false; // Имеются новые необработанные данные
+    //bool myNewWebData = false; // Имеются новые необработанные данные. Переехал в WebData
     bool myPrimaryDataProc = true; // Выполняется первичная обработка данных (в фоновом потоке), вторичную обработку не начинать!
     bool mySecondaryDataProc = false; // Выполняется вторичная обработка данных (в корутине), первичную обработку не начинать!
     bool myBanner1AddInfo = false; // Выводить ли на баннер с краткой информацией дополнительную информацию
+    [SerializeField]
+    bool _DataFromWeb = true; // Получать данные из интернета. В противном случае из файла Record.txt
 
-    // ********************** Запись отладочных данных в файлы ********************************************
-
-    String myRecDir = "Record";
-    // Словарь - массив файлов для записи отладочных данных
-    Dictionary<String, StreamWriter> myRecFile = new Dictionary<String, StreamWriter>();
 
     // ******************************************************************
-
     
     // Структура (на самом деле класс) для текущих параметров самолета, полученных от opensky-network.org ("Большая")
     // Пришлось переделать в класс, так как экземпляры System.Reflection.FieldInfo не отрабатывают метод setValue для структур.
@@ -338,56 +324,25 @@ public class sFlightRadar : MonoBehaviour {
     // Параметры времени
     sTime _Time;
 
-    // Запись данных в файлы
+    // Объект с методами для записи данных в файлы
     sRecord _Record;
+
+    // Объект для получения исходных данных
+    sWebData _WebData;
 
     // Use this for initialization
     void Start () {
 
-        // Запись данных в файлы
-        _Record = transform.GetComponent<sRecord>();
-
-        /*
-        // ********************** Запись в файл отладочных данных ********************************************
-
-        // Подготовим файл для записи
-
-        // Создать папку
-        Directory.CreateDirectory(myRecDir);
-        myRecDir = Path.Combine(Directory.GetCurrentDirectory(), myRecDir);
-
-        // Файл для записи по умолчанию
-        String myRecFileName = "Main";
-        myRecFile.Add(myRecFileName, new StreamWriter(Path.Combine(myRecDir, myRecFileName + ".txt")));
-        // Файл для записи получаемых данных
-        myRecFileName = "RawData";
-        myRecFile.Add(myRecFileName, new StreamWriter(Path.Combine(myRecDir, myRecFileName + ".txt")));
-        // Файл для записи в фоновом потоке
-        myRecFileName = "Thread";
-        myRecFile.Add(myRecFileName, new StreamWriter(Path.Combine(myRecDir, myRecFileName + ".txt")));
-        // Файл для записи в процессе обработки данных (комбинированный поток: фоновый + корутина)
-        myRecFileName = "ProcData";
-        myRecFile.Add(myRecFileName, new StreamWriter(Path.Combine(myRecDir, myRecFileName + ".txt")));
-        // Файл для записи в каждом кадре
-        myRecFileName = "Update";
-        myRecFile.Add(myRecFileName, new StreamWriter(Path.Combine(myRecDir, myRecFileName + ".txt")));
-
-        // ******************************************************************
-        */
-
-
         // Параметры времени
         _Time = transform.GetComponent<sTime>();
+        print("StartTime = " + _Time.StartTime + " UnixStartTime = " + _Time.UnixStartTime);
 
-        // Параметры времен
-        //myStopWatch = new Stopwatch();
-        //myStopWatch.Start();
-        myStartTime = _Time.StartTime;
-        myUnixStartTime = _Time.UnixStartTime;
-        myCurrentTime = 0;
-        //myDeltaTime = 0;
-        
-        print("myStartTime = " + myStartTime + " myUnixStartTime = " + myUnixStartTime);
+        // Ссылка на объект с методами для записи данных в файлы
+        _Record = transform.GetComponent<sRecord>();
+
+        // Объект для получения исходных данных
+        _WebData = transform.GetComponent<sWebData>();
+
 
         // Полный текст запроса к серверу
 
@@ -408,9 +363,10 @@ public class sFlightRadar : MonoBehaviour {
         float myNorthMargin = myLong + myLongHalfDistance;
         float mySouthMargin = myLong - myLongHalfDistance;
 
-        myURL = REQUEST_OpenSky_BASE_URL + "lamin=" + myWestMargin + "&lomin=" + mySouthMargin + "&lamax=" + myEastMargin + "&lomax=" + myNorthMargin;
+        _WebData.URL = REQUEST_OpenSky_BASE_URL + "lamin=" + myWestMargin + "&lomin=" + mySouthMargin + "&lamax=" + myEastMargin + "&lomax=" + myNorthMargin;
 
-        print("myURL = " + myURL);
+        print("myURL = " + _WebData.URL);
+
 
         // Трансформ шаблона самолетов - получить указатель и сразу спрятать
         mySamplePlane = GameObject.Find("SamplePlane").transform;
@@ -580,8 +536,15 @@ public class sFlightRadar : MonoBehaviour {
         // Спрячем все имеющиеся образцовые модели
         myObjTr.gameObject.SetActive(false);
 
-        // Запуск корутины получения данных от сервера
-        StartCoroutine(myFuncGetData());
+        // Запуск корутины получения данных
+        if (_DataFromWeb)
+        {
+            StartCoroutine(_WebData.GetWebData()); // web данные от сервера
+        }
+        else
+        {
+            StartCoroutine(_WebData.GetFileData()); // данные, сохраненные в файле Record.txt
+        }
 
         // Запуск фонового потока первичной обработки данных
         myFightDataThread = new Thread(new ThreadStart(myFuncThread)) { IsBackground = true }; // Создаем поток из функции myFuncThread()
@@ -611,125 +574,14 @@ public class sFlightRadar : MonoBehaviour {
         myMap.transform.position = myPos;
     }
 
-    /*
-    // 4 перегруженных функции для записи лог-файлов
-    // Запись в указанный файл
-    void _Record.MyLog(string myRecName, String myInfo)
-    {
-        if (myWriteLog)
-        {
-            myCurrentTime = (int)(myStopWatch.ElapsedMilliseconds - myStartTime);
-            myRecFile[myRecName].WriteLine(myInfo.Replace(".",",") + " CurrentTime = " + myCurrentTime);
-        }
-    }
-
-    // Запись в указанный файл с возможностью не добавлять время
-    void _Record.MyLog(string myRecName, String myInfo, bool myTime)
-    {
-        if (myWriteLog)
-        {
-            if (myTime)
-            {
-                myCurrentTime = (int)(myStopWatch.ElapsedMilliseconds - myStartTime);
-                myRecFile[myRecName].WriteLine(myInfo.Replace(".", ",") + " CurrentTime = " + myCurrentTime);
-            }
-            else
-            {
-                myRecFile[myRecName].WriteLine(myInfo.Replace(".", ","));
-            }
-        }
-    }
-
-    // Запись в файл по умолчанию
-    void _Record.MyLog(String myInfo)
-    {
-        if (myWriteLog)
-        {
-            myRecFile["Main"].WriteLine(myInfo.Replace(".", ","));
-        }
-    }
-
-    // Запись в два файла
-    void _Record.MyLog(string myRecName1, string myRecName2, String myInfo)
-    {
-        if (myWriteLog)
-        {
-            myCurrentTime = (int)(myStopWatch.ElapsedMilliseconds - myStartTime);
-            myRecFile[myRecName1].WriteLine(myInfo.Replace(".", ",") + " CurrentTime = " + myCurrentTime);
-            myRecFile[myRecName2].WriteLine(myInfo.Replace(".", ",") + " CurrentTime = " + myCurrentTime);
-        }
-    }
-
-    */
-
-
-    // Запросить в Интернете, получить, и записать полетные данные в текстовую строку
-    IEnumerator myFuncGetData()
-    {
-        long myWebRequestTime = 0;
-        int myWebRequestCount = 0;
-        int myDataTraffic = 0;
-
-        _Record.MyLog("RawData", "@@@ myFuncGetData(): Начну выполнять запросы через ~ 1 секунду");
-        yield return new WaitForSeconds(1);
-        _Record.MyLog("RawData", "@@@ myFuncGetData(): Подождали 1 секунду, начинаем");
-
-        while (true)
-        {
-            myWebRequestTime = _Time.CurrentTime();
-            _Record.MyLog("RawData", "@@@ myFuncGetData(): Начинаю запрос. Время = " + myWebRequestTime + " myURL = " + myURL);
-
-            // Готовим запрос
-            UnityWebRequest myRequest = UnityWebRequest.Get(myURL);
-            // Выполняем запрос и получаем ответ
-            yield return myRequest.SendWebRequest();
-            // Зафиксируем время ответа и интервал времени от предыдущего ответа
-            myResponseTime = _Time.CurrentTime(); // Время получения данных от сервера
-
-            //long myResponseUnixTime = DateTimeOffset.Now.ToUnixTimeSeconds() - myUnixStartTime;
-            //_Record.MyLog("RawData", "@@@ myFuncGetData(): Время прихода ответа (myResponseTime) = " + myResponseTime + " myResponseUnixTime = " + myResponseUnixTime);
-
-
-            myWebRequestTime = myResponseTime - myWebRequestTime; // Время, которое выполняли запрос и получали ответ
-            myWebRequestCount++; // Номер запроса
-
-            if (myRequest.isNetworkError || myRequest.isHttpError)
-            {
-                _Record.MyLog("RawData", "@@@ myFuncGetData(): Запрос не выполнен. Номер запроса = " + myWebRequestCount + " Время на запрос/ответ = " + myWebRequestTime);
-                _Record.MyLog("RawData", "@@@ myFuncGetData(): Ошибка " + myRequest.error + " Продолжу работать через ~3 секунды");
-                yield return new WaitForSeconds(3);
-            }
-            else
-            {
-                // Results as text
-                myResponseStr = myRequest.downloadHandler.text;
-                // Установим флаг "Имеются новые необработанные данные"
-                myNewWebData = true;
-                // Отчитаемся о результатах запроса
-                myDataTraffic += myResponseStr.Length;
-                _Record.MyLog("RawData", "@@@ myFuncGetData(): Запрос выполнен. myNewWebData = " + myNewWebData + " Номер запроса = " + myWebRequestCount + " Время прихода ответа = " + myResponseTime + " Время на запрос/ответ = " + myWebRequestTime + " Получена строка длиной = " + myResponseStr.Length + " Общий траффик авиаданных = " + myDataTraffic);
-                _Record.MyLog("RawData", "@@@ myFuncGetData(): " + myResponseStr);
-            }
-
-            myRequest.Dispose(); // завершить запрос, освободить ресурсы
-
-            // Переждать до конца рекомендованного времени цикла, секунд (если запрос занял времени меньше)
-            float myWaitTime = Mathf.Max(0.0f, (myWebCycleTime - myWebRequestTime / 1000.0f));
-            _Record.MyLog("RawData", "@@@ myFuncGetData(): Переждем до следующего запроса секунд: " + myWaitTime + ".");
-            yield return new WaitForSeconds(myWaitTime);
-            _Record.MyLog("RawData", "@@@ myFuncGetData(): Переждали еще секунд: " + myWaitTime + " Буду делать следующий запрос");
-        }
-
-    }
-
 
     // Первичная обработка данных, выполняемая в фоновом потоке. Сюда, по возможности, вынесены операции из корутины myFuncProcData()
     void myFuncThread()
     {
 
-        // Ждем получения новых данных в корутине myFuncGetData(). Выполняется только в начале работы программы
-        _Record.MyLog("RawData", "ProcData", "=== myFuncThread(): Ждем первого получения новых данных. myNewWebData = " + myNewWebData);
-        while (!myNewWebData)
+        // Ждем получения новых данных в корутине _WebData.GetWebData(). Выполняется только в начале работы программы
+        _Record.MyLog("RawData", "ProcData", "=== myFuncThread(): Ждем первого получения новых данных. NewData = " + _WebData.NewData);
+        while (!_WebData.NewData)
         {
             Thread.Sleep(200);
         }
@@ -741,7 +593,7 @@ public class sFlightRadar : MonoBehaviour {
 
             if (myFirstData)
             {
-                _Record.MyLog("RawData", "ProcData", "=== myFuncThread(): Обнаружено первое получение новых данных. myNewWebData = " + myNewWebData);
+                _Record.MyLog("RawData", "ProcData", "=== myFuncThread(): Обнаружено первое получение новых данных. NewData = " + _WebData.NewData);
                 myFirstData = false;
             }
             else
@@ -758,18 +610,18 @@ public class sFlightRadar : MonoBehaviour {
             _Record.MyLog("RawData", "ProcData", "=== myFuncThread(): Начинаем первичную обработку данных");
 
             // Начинаем первичную обработку данных
-            // Если получены новые данные в корутине myFuncGetData(), то начинаем их разбирать
-            if (myNewWebData)
+            // Если получены новые данные в корутине _WebData.GetData(), то начинаем их разбирать
+            if (_WebData.NewData)
             {
-                _Record.MyLog("RawData", "ProcData", "=== myFuncThread(): Есть новые данные от myFuncGetData(). myNewWebData = " + myNewWebData);
-                myNewWebData = false;
-                myLastDeltaTime = myResponseTime - myStartProcTime; // Время работы последнего выполненного полного цикла обработки данных
-                myStartProcTime = myResponseTime; // Время начала нового полного цикла обработки данных
+                _Record.MyLog("RawData", "ProcData", "=== myFuncThread(): Есть новые данные от _WebData.GetWebData(). NewData = " + _WebData.NewData);
+                _WebData.NewData = false;
+                myLastDeltaTime = _WebData.ResponseTime - myStartProcTime; // Время работы последнего выполненного полного цикла обработки данных
+                myStartProcTime = _WebData.ResponseTime; // Время начала нового полного цикла обработки данных
                 myStartProcTime2 = myStartProcTime;
 
-                _Record.MyLog("RawData", "ProcData", "=== myFuncThread(): Время начала нового цикла обработки считаем от myResponseTime = myStartProcTime = " + myStartProcTime + " myLastDeltaTime = " + myLastDeltaTime);
+                _Record.MyLog("RawData", "ProcData", "=== myFuncThread(): Время начала нового цикла обработки считаем от _WebData.ResponseTime = myStartProcTime = " + myStartProcTime + " myLastDeltaTime = " + myLastDeltaTime);
                 // Парсим полученную строку и создаем объект JSON
-                dynamic myJObj = JObject.Parse(myResponseStr);
+                dynamic myJObj = JObject.Parse(_WebData.ResponseStr);
                 // Узел "states" - массив состояний самолетов (статических векторов)
                 JArray myAcList = myJObj.states;
                 int myPlanesInZone = 0;
@@ -1098,7 +950,7 @@ public class sFlightRadar : MonoBehaviour {
                             _Record.MyLog(myKey, "ProcData", "=== myFuncThread(): ключ = " + myKey + " Полученные данные. Raw Position = " + myPlane.RawPosition);
 
                             // Отставание данных о положении самолета (разница между исходным временем позиционирования (time_position) и временем на которое идет расчет положения (myStartProcTime))
-                            myPosDelay = (int)(myStartProcTime - (myOnePlanePars.time_position - myUnixStartTime) * 1000);
+                            myPosDelay = (int)(myStartProcTime - (myOnePlanePars.time_position - _Time.UnixStartTime) * 1000);
                             _Record.MyLog(myKey, "ProcData", "=== myFuncThread(): О задержке полученных данных: myStartProcTime = " + myStartProcTime + " time_position = " + myOnePlanePars.time_position + " myPosDelay = " + myPosDelay);
                             myResponsedPosition = myResponsedPosition + myPlane.Speed * myPosDelay / 1000f;
                             _Record.MyLog(myKey, "ProcData", "=== myFuncThread(): ключ = " + myKey + " Полученные данные. Responsed Position = " + myResponsedPosition);
@@ -1316,7 +1168,7 @@ public class sFlightRadar : MonoBehaviour {
                 {
                     myStartProcTime = myCurTime; // Время начала нового цикла
                     myStartProcTime2 = myStartProcTime;
-                    _Record.MyLog("RawData", "ProcData", "=== myFuncThread(): Новые данные от myFuncGetData() еще не поступили myLastDeltaTime = " + myLastDeltaTime + " myStartProcTime = " + myStartProcTime);
+                    _Record.MyLog("RawData", "ProcData", "=== myFuncThread(): Новые данные от _WebData.GetWebData() еще не поступили myLastDeltaTime = " + myLastDeltaTime + " myStartProcTime = " + myStartProcTime);
 
                     List<String> myKeys = new List<String>(myPlaneVisKeys);
                     foreach (String myKey in myKeys)
@@ -1331,7 +1183,7 @@ public class sFlightRadar : MonoBehaviour {
                         _Record.MyLog("ProcData", "=== myFuncThread(): k = myOnePlaneHist.Time.Count, k=" + k);
                         Vector3 myLastPosition = myOnePlaneHist.Position[k - 1];
                         Vector3 myPredictedPosition = myLastPosition + myOnePlaneHist.Speed[k - 1] * myLastDeltaTime / 1000;
-                        _Record.MyLog(myKey, "=== myFuncThread(): Новые данные от myFuncGetData() еще не поступили");
+                        _Record.MyLog(myKey, "=== myFuncThread(): Новые данные от _WebData.GetWebData() еще не поступили");
                         _Record.MyLog(myKey, "ProcData", "=== myFuncThread(): ключ = " + myKey + " Прогноз. LastDeltaTime = " + myLastDeltaTime + " Previous Position =" + myOnePlaneHist.Position[k - 1] + " Previous Speed = " + myOnePlaneHist.Speed[k - 1] + " Predicted Position = " + myPredictedPosition);
                         // и "летим" по нему
                         myPlane.Position = myPredictedPosition;
@@ -1624,10 +1476,10 @@ public class sFlightRadar : MonoBehaviour {
                     myPlaneVis[myKeys[i]] = myPlane;
                 }
                 // Удалим устаревший самолет и его записи во всех словарях. Также удалим самолет, если он "приземлися"
-                else if (((myResponseTime - myPlane.Time) > 15000))
+                else if (((_WebData.ResponseTime - myPlane.Time) > 15000))
                 {
                     myPlaneToDelete = true;
-                    _Record.MyLog("ProcData", myKeys[i], "%%% myFuncProcData(): Будем удалять устаревший самолет " + myKeys[i] + ". Время последнего приема данных от сервера = " + myResponseTime + ", время поступления последних данных о самолете = " + myPlane.Time);
+                    _Record.MyLog("ProcData", myKeys[i], "%%% myFuncProcData(): Будем удалять устаревший самолет " + myKeys[i] + ". Время последнего приема данных от сервера = " + _WebData.ResponseTime + ", время поступления последних данных о самолете = " + myPlane.Time);
                 }
                 else
                 {

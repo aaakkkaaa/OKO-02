@@ -10,7 +10,7 @@ public class sRecord : MonoBehaviour
 {
 
     // Папка для записи файлов
-    String _RecDir = "Record";
+    public String RecDir = "Record";
     // Словарь - массив файлов для записи данных. Ключ - имя файла, значение - объект StreamWriter
     Dictionary<String, StreamWriter> _RecFile = new Dictionary<String, StreamWriter>();
     /*
@@ -27,10 +27,16 @@ public class sRecord : MonoBehaviour
 
     // Отладочный параметр - запиcывать ли логи
     [SerializeField]
-    bool myWriteLog = true;
+    bool _WriteLog = true;
+
+    // Запиcывать ли исходные данные web
+    [SerializeField]
+    bool _WriteWebData = true;
 
     // Параметры времени
     sTime _Time;
+
+
 
     void Awake()
     {
@@ -38,24 +44,30 @@ public class sRecord : MonoBehaviour
         // ********************** Запись данных в файлы ********************************************
 
         // Создать папку
-        Directory.CreateDirectory(_RecDir);
-        _RecDir = Path.Combine(Directory.GetCurrentDirectory(), _RecDir);
+        Directory.CreateDirectory(RecDir);
+        RecDir = Path.Combine(Directory.GetCurrentDirectory(), RecDir);
 
-        // Файл для записи по умолчанию
-        AddToDic("Main");
-        // Файл для записи получаемых данных
-        AddToDic("RawData");
-        // Файл для записи в фоновом потоке
-        AddToDic("Thread");
-        // Файл для записи в процессе обработки данных (комбинированный поток: фоновый + корутина)
-        AddToDic("ProcData");
-        // Файл для записи в каждом кадре
-        AddToDic("Update");
+        if (_WriteLog)
+        {
+            // Файл для записи по умолчанию
+            AddToDic("Main");
+            // Файл для записи получаемых данных
+            AddToDic("RawData");
+            // Файл для записи в фоновом потоке
+            AddToDic("Thread");
+            // Файл для записи в процессе обработки данных (комбинированный поток: фоновый + корутина)
+            AddToDic("ProcData");
+            // Файл для записи в каждом кадре
+            AddToDic("Update");
+        }
 
-        //Adsbexchange - Файл для записи исходных данных adsbexchange.com
-        AddToDic("ADSB_Exchange");
-        //OpenSky - Файл для записи исходных данных opensky-network.org
-        AddToDic("OpenSky");
+        if (_WriteWebData)
+        {
+            //Adsbexchange - Файл для записи исходных данных adsbexchange.com
+            //AddToDic("ADSB_Exchange");
+            //OpenSky - Файл для записи исходных данных opensky-network.org
+            AddToDic("OpenSky");
+        }
 
         // ******************************************************************
 
@@ -64,18 +76,18 @@ public class sRecord : MonoBehaviour
 
     }
 
-    // Добавить в словарь имя файла и объект StreamWriter
+    // Добавить в словарь имя файла и созданный объект StreamWriter
     public void AddToDic(String myRecFileName)
     {
-        _RecFile.Add(myRecFileName, new StreamWriter(Path.Combine(_RecDir, myRecFileName + ".txt")));
+        _RecFile.Add(myRecFileName, new StreamWriter(Path.Combine(RecDir, myRecFileName + ".txt")));
     }
 
-    
+
     // ****************  4 перегруженных функции для записи лог-файлов   ********************************
     // Запись в указанный файл
     public void MyLog(string myRecName, String myInfo)
     {
-        if (myWriteLog)
+        if (_WriteLog)
         {
             int myCurrentTime = _Time.CurrentTime();
             _RecFile[myRecName].WriteLine(myInfo.Replace(".", ",") + " CurrentTime = " + myCurrentTime);
@@ -85,7 +97,7 @@ public class sRecord : MonoBehaviour
     // Запись в указанный файл с возможностью не добавлять время
     public void MyLog(string myRecName, String myInfo, bool myTime)
     {
-        if (myWriteLog)
+        if (_WriteLog)
         {
             if (myTime)
             {
@@ -102,7 +114,7 @@ public class sRecord : MonoBehaviour
     // Запись в файл по умолчанию
     public void MyLog(String myInfo)
     {
-        if (myWriteLog)
+        if (_WriteLog)
         {
             _RecFile["Main"].WriteLine(myInfo.Replace(".", ","));
         }
@@ -111,7 +123,7 @@ public class sRecord : MonoBehaviour
     // Запись в два файла
     public void MyLog(string myRecName1, string myRecName2, String myInfo)
     {
-        if (myWriteLog)
+        if (_WriteLog)
         {
             int myCurrentTime = _Time.CurrentTime();
             _RecFile[myRecName1].WriteLine(myInfo.Replace(".", ",") + " CurrentTime = " + myCurrentTime);
@@ -119,13 +131,25 @@ public class sRecord : MonoBehaviour
         }
     }
 
+    // Запись в файл web данных
+    public void WebData(string myRecName, string myInfo)
+    {
+        if (_WriteWebData)
+        {
+            _RecFile[myRecName].WriteLine(myInfo);
+        }
+   }
+
     // ******************************************************************
-    
+
     // Закрыть один лог-файл и удалить его запись из словаря лог-файлов
     public void Close(string myRecName)
     {
-        _RecFile[myRecName].Close();
-        _RecFile.Remove(myRecName);
+        if (_WriteLog)
+        {
+            _RecFile[myRecName].Close();
+            _RecFile.Remove(myRecName);
+        }
     }
 
     // Закрыть все открытые лог-файлы
